@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malik Multi-Agent Content Pipeline</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header>
+      <div class="logo-section">
+        <h1>
+          <span>🌌</span> MALIK
+          <span class="logo-badge">PIPELINE v1.2</span>
+        </h1>
+      </div>
+      <div class="header-actions">
+        <span class="logo-badge" id="backend-status" style="background: rgba(235, 87, 87, 0.1); border-color: rgba(235, 87, 87, 0.3); color: #eb5757; transition: var(--transition-smooth); margin-right: 0.5rem;">🔌 Server Offline</span>
+        <span class="panel-subtitle" id="global-status">System Ready</span>
+        <button class="btn-secondary" id="open-config-btn">⚙️ Agent System Prompts</button>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Column 1: Config & Agent Management -->
+      <div class="left-column flex-column">
+        <!-- Control Config Panel -->
+        <div class="glass-panel config-section">
+          <div class="panel-header">
+            <h2>⚙️ Pipeline Settings</h2>
+          </div>
+          
+          <div class="input-group">
+            <label for="topic-select">Select Content Topic</label>
+            <select class="select-input" id="topic-select">
+              <option value="medicine">Future of AI in Medicine</option>
+              <option value="farming">Vertical Urban Farming</option>
+              <option value="architecture">Modern Web Architecture</option>
+              <option value="custom">* Write Custom Topic...</option>
+            </select>
+          </div>
+
+          <div class="input-group" id="custom-topic-group" style="display: none;">
+            <label for="custom-topic-input">Custom Topic Title</label>
+            <input type="text" class="text-input" id="custom-topic-input" placeholder="Enter custom article topic...">
+          </div>
+
+          <div class="input-group">
+            <label for="tone-select">Content Tone</label>
+            <select class="select-input" id="tone-select">
+              <option value="professional">Professional / Authoritative</option>
+              <option value="creative">Creative / Visionary</option>
+              <option value="educational">Educational / Analytical</option>
+              <option value="casual">Casual / Conversational</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="format-select">Target Channel Format</label>
+            <select class="select-input" id="format-select">
+              <option value="blog_post">Detailed Blog Post (~800 words)</option>
+              <option value="newsletter">Email Newsletter (~500 words)</option>
+              <option value="thread">Educational Thread (Markdown sections)</option>
+            </select>
+          </div>
+
+          <button class="btn-primary" id="launch-btn">
+            <span>🚀</span> Launch AI Pipeline
+          </button>
+        </div>
+
+        <!-- Active Agents Grid -->
+        <div class="glass-panel flex-column" style="flex: 1;">
+          <div class="panel-header">
+            <h2>🤖 Agent Network</h2>
+            <span class="panel-subtitle">6 Nodes Active</span>
+          </div>
+          <div class="agents-container" id="agents-list">
+            <!-- Populated via Javascript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Visual Graph & Stream Log -->
+      <div class="middle-column">
+        <!-- Visual Node Graph Panel -->
+        <div class="glass-panel graph-panel">
+          <svg class="node-graph-svg" id="node-graph" viewBox="0 0 600 120">
+            <!-- Path connections -->
+            <path id="path-1" class="graph-path" d="M 60 60 L 140 60" />
+            <path id="path-2" class="graph-path" d="M 140 60 L 220 60" />
+            <path id="path-3" class="graph-path" d="M 220 60 L 300 60" />
+            <path id="path-4" class="graph-path" d="M 300 60 L 380 60" />
+            <path id="path-5" class="graph-path" d="M 380 60 L 460 60" />
+            
+            <!-- Node Groups -->
+            <g id="node-researcher" class="node-group">
+              <circle cx="60" cy="60" r="22" class="node-circle" />
+              <text x="60" y="64" class="node-icon">🔍</text>
+              <text x="60" y="100" class="node-label">Researcher</text>
+            </g>
+
+            <g id="node-outliner" class="node-group">
+              <circle cx="140" cy="60" r="22" class="node-circle" />
+              <text x="140" y="64" class="node-icon">📐</text>
+              <text x="140" y="100" class="node-label">Outliner</text>
+            </g>
+
+            <g id="node-writer" class="node-group">
+              <circle cx="220" cy="60" r="22" class="node-circle" />
+              <text x="220" y="64" class="node-icon">✍️</text>
+              <text x="220" y="100" class="node-label">Writer</text>
+            </g>
+
+            <g id="node-seo" class="node-group">
+              <circle cx="300" cy="60" r="22" class="node-circle" />
+              <text x="300" y="64" class="node-icon">📈</text>
+              <text x="300" y="100" class="node-label">SEO</text>
+            </g>
+
+            <g id="node-editor" class="node-group">
+              <circle cx="380" cy="60" r="22" class="node-circle" />
+              <text x="380" y="64" class="node-icon">✂️</text>
+              <text x="380" y="100" class="node-label">Editor</text>
+            </g>
+
+            <g id="node-publisher" class="node-group">
+              <circle cx="460" cy="60" r="22" class="node-circle" />
+              <text x="460" y="64" class="node-icon">🚀</text>
+              <text x="460" y="100" class="node-label">Publisher</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Terminal Console Logs Panel -->
+        <div class="glass-panel console-panel">
+          <div class="panel-header">
+            <h2>💻 Real-Time Agent Stream Logs</h2>
+            <button class="btn-secondary" id="clear-console-btn" style="padding: 2px 8px; font-size: 0.75rem;">Clear Console</button>
+          </div>
+          <div class="console-terminal" id="console-output">
+            <div class="console-line">
+              <span class="console-timestamp">[14:30:00]</span>
+              <span class="console-tag" style="background: rgba(255,255,255,0.1); color: var(--text-secondary)">system</span>
+              <span class="console-message">Malik Multi-Agent Content Pipeline active and listening. Choose settings and click 'Launch' to simulate operations.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 3: Live Document Preview & Metrics -->
+      <div class="right-column flex-column">
+        <!-- Rendered Document Panel -->
+        <div class="glass-panel preview-panel">
+          <div class="panel-header">
+            <h2>📄 Content Preview</h2>
+            <div class="preview-controls">
+              <div class="preview-tabs">
+                <button class="preview-tab active" id="tab-rendered">Rendered</button>
+                <button class="preview-tab" id="tab-raw">Raw MD</button>
+              </div>
+              <button class="btn-secondary" id="export-md-btn" disabled>💾 Export</button>
+            </div>
+          </div>
+          
+          <div class="preview-body markdown-rendered" id="document-body">
+            <div style="color: var(--text-muted); text-align: center; margin-top: 5rem;">
+              <span style="font-size: 2.5rem; display: block; margin-bottom: 1rem;">📝</span>
+              Generated article content will compile here progressively as the agents run.
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality Analytics Panel -->
+        <div class="glass-panel metrics-panel">
+          <div class="metric-card">
+            <span class="metric-label">Content Length</span>
+            <div class="metric-value-container">
+              <span class="metric-value" id="metric-words">0</span>
+              <span class="metric-label">words</span>
+            </div>
+            <span class="metric-trend neutral" id="metric-reading-time">Est. 0m read</span>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-grid-container">
+              <div style="display: flex; flex-direction: column;">
+                <span class="metric-label">SEO Audit Score</span>
+                <div class="metric-value-container">
+                  <span class="metric-value" id="seo-score-num">0</span>
+                  <span class="metric-label" style="font-size: 0.8rem;">/ 100</span>
+                </div>
+              </div>
+              
+              <!-- Circular Progress -->
+              <div class="seo-progress-circle">
+                <svg class="seo-progress-svg">
+                  <circle cx="25" cy="25" r="20" class="seo-circle-bg"></circle>
+                  <circle cx="25" cy="25" r="20" class="seo-circle-fill" id="seo-progress-ring"></circle>
+                </svg>
+                <div class="seo-score-text" id="seo-circle-text">0%</div>
+              </div>
+            </div>
+            <span class="metric-trend neutral" id="metric-seo-status">Incomplete</span>
+          </div>
+
+          <div class="metric-card" style="grid-column: span 2;">
+            <span class="metric-label">Quality Audits & Target Keywords</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;" id="keywords-container">
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-style: italic;">No audit run yet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Custom Prompt Modal -->
+  <div class="modal-overlay" id="config-modal">
+    <div class="modal-content">
+      <div class="panel-header">
+        <h2>🛠️ Configure Agent Prompts</h2>
+      </div>
+      
+      <div class="input-group">
+        <label for="modal-agent-select">Select Agent to Customize</label>
+        <select class="select-input" id="modal-agent-select">
+          <option value="researcher">🔍 Aether Research Bot (Primary Researcher)</option>
+          <option value="outliner">📐 Struktura Outline engine (Architect)</option>
+          <option value="writer">✍️ Scribe Copywriter (Content Creator)</option>
+          <option value="seo">📈 RankMaster SEO (SEO Specialist)</option>
+          <option value="editor">✂️ Veritas Editor (Senior Copy Editor)</option>
+          <option value="publisher">🚀 Malik Publisher (Distribution Hub)</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="modal-prompt-textarea">System Instructions</label>
+        <textarea class="text-input" id="modal-prompt-textarea" rows="6" style="resize: none; font-family: var(--font-mono); font-size: 0.8rem;"></textarea>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem;">
+        <div class="input-group">
+          <label>Inference Temp</label>
+          <input type="text" class="text-input" id="modal-temp-input" readonly>
+        </div>
+        <div class="input-group">
+          <label>Model Engine</label>
+          <input type="text" class="text-input" value="Gemini 3.5 Flash" readonly>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="modal-close-btn">Cancel</button>
+        <button class="btn-primary" id="modal-save-btn" style="color: #000; width: auto; padding-left: 1.5rem; padding-right: 1.5rem;">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

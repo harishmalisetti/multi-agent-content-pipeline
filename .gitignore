@@ -1,0 +1,13 @@
+# Dependency directories
+node_modules/
+
+# Environment variables containing sensitive API keys
+.env
+
+# Logs and database stores
+*.log
+npm-debug.log*
+
+# System generated or temp folders
+.system_generated/
+.DS_Store
